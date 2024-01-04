@@ -12,3 +12,7 @@ for(let i = 0; i <= 15; i++){
 }
 
 //HoverEventListener to add colors
+const pixels = document.querySelectorAll(".gridElement");
+pixels.forEach(pixel => {
+    pixel.addEventListener("mouseover", () => pixel.style.backgroundColor = "black");
+});
