@@ -13,15 +13,61 @@ function generateCanvas(dimension){
         }
     }
     const pixels = document.querySelectorAll(".gridElement");
+    return pixels;
+}
+
+function normalMode(){
+    const dimension = prompt("Enter dimension of canvas: ", "");
+    const pixels = generateCanvas(dimension); 
     pixels.forEach(pixel => {
         pixel.addEventListener("mouseover", () => pixel.style.backgroundColor = "black");
     });
 }
 
-const newCanvasGeneratorButton = document.querySelector(".canvasGenerator");
-newCanvasGeneratorButton.addEventListener("click", () => {
+//Multilayer mode
+function multilayerMode(){
     const dimension = prompt("Enter the no. of pixels in the grid eg: 10 = 10X10 grid", "");
-    generateCanvas(dimension);
-});
+    const pixels = generateCanvas(dimension);
+    pixels.forEach(pixel => {
+        pixel.addEventListener("mouseover", () => {
+            const classArray = Array.from(pixel.classList);
+            const digit = 10 - classArray.length.toString();
+            if(digit >= 0){
+                const hexcode = '#'.concat(digit, digit, digit, digit, digit, digit);
+                pixel.classList.add(digit);
+                console.log(hexcode);
+                pixel.style.backgroundColor = hexcode;
+            }
 
-generateCanvas(16);
+        });
+    });
+}
+
+//Rainbow mode
+function rainbowMode(){
+    const dimension = prompt("Enter the no. of pixels in the grid eg: 10 = 10X10 grid", "");
+    const pixels = generateCanvas(dimension);
+    pixels.forEach(pixel => {
+        pixel.addEventListener("mouseover", () => {
+            const blueval = Math.floor(Math.random() * 256);
+            const greenval = Math.floor(Math.random() * 256);
+            const redval = Math.floor(Math.random() * 256);
+            pixel.style.backgroundColor = 'rgb(' + [redval, greenval, blueval].join(',') + ')'; 
+        });
+    });
+}
+
+//Event listener for "Create New Canvas"
+createNewCanvasButton = document.querySelector(".canvasGenerator");
+createNewCanvasButton.addEventListener("click", () => normalMode());
+
+//Event listener for "Multilayer mode"
+multilayerModeButton = document.querySelector(".progressiveOpaque");
+multilayerModeButton.addEventListener("click", () => multilayerMode());
+
+//Event listener for "Rainbow mode" 
+rainbowModeButton = document.querySelector(".rainbow");
+rainbowModeButton.addEventListener("click", () => rainbowMode());
+
+//Generate a defalut 16x16 canvas initially
+normalMode();
